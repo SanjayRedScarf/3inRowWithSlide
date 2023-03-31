@@ -2,7 +2,7 @@ const gridSize = 5;
 const colors = ["red", "blue", "green", "yellow"];
 const gameContainer = document.getElementById("game-container");
 const scoreElem = document.getElementById("score");
-const slideButton = document.getElementById("slide");
+// const slideButton = document.getElementById("slide"); // This button is no longer on the front page
 let slideMoves = 0;
 let score = 0;
 let startDot = null;
@@ -10,6 +10,21 @@ let draggedDot = null;
 let isMouseDown = false;
 let initialMousePosition;
 let grid = [];
+//const dot = document.getElementById("dot");
+
+//dot.addEventListener("transitionend", resetOpacity);
+
+function resetOpacity(dot) {
+  dot.style.opacity = 1;
+}
+
+function addTransitionEndEventListeners() {
+  const dots = document.querySelectorAll(".dot");
+  dots.forEach((dot) => {
+    //dot.addEventListener("transitionend", resetOpacity);
+    resetOpacity(dot);
+  });
+}
 
 //function initiateSlideMove(event) {
 //    if (slideMoves > 0) {
@@ -46,9 +61,9 @@ function handleEliminateDotClick(event) {
         if (checkMatch(startDot, { dotElem: event.target, row, col, color })) {
             removeMatchedDots(startDot, { dotElem: event.target, row, col, color });
             updateScore(1);
-            if (slideMoves === 0) {
-                slideButton.disabled = false;
-            }
+            //if (slideMoves === 0) {
+              //  slideButton.disabled = false;
+            //}
             updateSlideMoves(1);
             
             // Should we Reattach the event listeners?
@@ -121,6 +136,8 @@ function handleMouseUp(event) {
 
 console.log("this is handlemouseup");
 
+
+
     if (isMouseDown && event.target.classList.contains("dot")) {
         isMouseDown = false;
         const row = parseInt(event.target.dataset.row);
@@ -152,9 +169,9 @@ console.log("this is handlemouseup");
         event.target.classList.remove("dragging");
 
         updateSlideMoves(-1);
-        if (slideMoves === 0) {
-            slideButton.disabled = true;
-        }
+        //if (slideMoves === 0) {
+          //  slideButton.disabled = true;
+        //}
 
         // Clear the startDot variable
         startDot = null;
@@ -193,6 +210,7 @@ function renderGrid() {
             gameContainer.appendChild(grid[i][j]);
         }
     }
+    addTransitionEndEventListeners(); //not sure this line is actually needed here?
 }
 
 
@@ -279,6 +297,8 @@ function removeMatchedDots(dot1, dot2) {
     const rowDiff = Math.abs(dot1.row - dot2.row);
     const colDiff = Math.abs(dot1.col - dot2.col);
 
+		console.log("CURRENTLY REMOVING a 3-in-a-row!");
+
     dot1.dotElem.style.backgroundColor = generateRandomDotColor();
     dot2.dotElem.style.backgroundColor = generateRandomDotColor();
 
@@ -338,6 +358,7 @@ function performSlideMove(direction, index, steps) {
     }
 
     renderGrid();
+    addTransitionEndEventListeners();
     updateDotDataAttributes();
 
 }
@@ -360,7 +381,7 @@ function updateScore(points) {
 //        performSlideMove(direction, index, steps);
 //        updateSlideMoves(-1);
 //        if (slideMoves === 0) {
-//            slideButton.disabled = true;
+//           slideButton.disabled = true;
  //       }
 //    } else {
 //        alert("Invalid input. Please try again.");
