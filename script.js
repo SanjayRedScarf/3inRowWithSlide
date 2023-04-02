@@ -223,40 +223,6 @@ function updateSlideMoves(value) {
 }
 
 
-/*
-function handleDotClick(event) {
-		if (draggedDot) {
- 		   draggedDot = null;
-	     startDot = null;
-    	 return;
-		}
-    
-    const row = parseInt(event.target.dataset.row);
-    const col = parseInt(event.target.dataset.col);
-    const color = event.target.style.backgroundColor;
-
-	console.log("This is handleDotClick");
-
-    if (!startDot) {
-        startDot = { dotElem: event.target, row, col, color };
-    } else {
-        if (checkMatch(startDot, { dotElem: event.target, row, col, color })) {
-            removeMatchedDots(startDot, { dotElem: event.target, row, col, color });
-            updateScore(1);
-            if (slideMoves === 0) {
-                slideButton.disabled = false;
-            }
-            updateSlideMoves(1);
-
-            // Reattach the event listeners
-            window.addEventListener("mousemove", handleMouseMove);
-            window.addEventListener("mouseup", handleMouseUp);
-        }
-        startDot = null;
-    }
-}
-*/
-
 
 function checkMatch(dot1, dot2) {
     const rowDiff = Math.abs(dot1.row - dot2.row);
@@ -288,8 +254,14 @@ function checkMatch(dot1, dot2) {
     return false;
 }
 
-function generateRandomDotColor() {
-    return colors[Math.floor(Math.random() * colors.length)];
+// Used to use generateRandomDotColor, but not that's been superseded by generateNewColorExcept
+//function generateRandomDotColor() {
+//    return colors[Math.floor(Math.random() * colors.length)];
+//}
+
+function generateNewColorExcept(color) {
+    const availableColors = colors.filter(c => c !== color);
+    return availableColors[Math.floor(Math.random() * availableColors.length)];
 }
 
 
@@ -299,12 +271,12 @@ function removeMatchedDots(dot1, dot2) {
 
 		console.log("CURRENTLY REMOVING a 3-in-a-row!");
 
-    dot1.dotElem.style.backgroundColor = generateRandomDotColor();
-    dot2.dotElem.style.backgroundColor = generateRandomDotColor();
+    dot1.dotElem.style.backgroundColor = generateNewColorExcept(dot1.color);
+    dot2.dotElem.style.backgroundColor = generateNewColorExcept(dot2.color);
 
     const middleRow = (dot1.row + dot2.row) / 2;
     const middleCol = (dot1.col + dot2.col) / 2;
-    gameContainer.children[middleRow * gridSize + middleCol].style.backgroundColor = generateRandomDotColor();
+    gameContainer.children[middleRow * gridSize + middleCol].style.backgroundColor = generateNewColorExcept(dot1.color);
 }
 
 function updateDotDataAttributes() {
@@ -365,32 +337,10 @@ function performSlideMove(direction, index, steps) {
 
 
 
-
 function updateScore(points) {
     score += points;
     scoreElem.textContent = score;
 }
 
-
-//slideButton.addEventListener("click", () => {
-//    const direction = prompt("Enter slide direction (up, down, left, right):");
-//    const index = parseInt(prompt("Enter the index of the row or column to slide (0-based index):"));
-//    const steps = parseInt(prompt("Enter the number of steps to slide:"));
-
-//    if (direction && index >= 0 && steps > 0) {
-//        performSlideMove(direction, index, steps);
-//        updateSlideMoves(-1);
-//        if (slideMoves === 0) {
-//           slideButton.disabled = true;
- //       }
-//    } else {
-//        alert("Invalid input. Please try again.");
-//    }
-
-//    slideMoves--;
-//    if (slideMoves === 0) {
-//        slideButton.disabled = true;
-//    }
-//});
 
 generateGrid();
