@@ -2,7 +2,6 @@ const gridSize = 5;
 const colors = ["red", "blue", "green", "yellow"];
 const gameContainer = document.getElementById("game-container");
 const scoreElem = document.getElementById("score");
-// const slideButton = document.getElementById("slide"); // This button is no longer on the front page
 let slideMoves = 0;
 let score = 0;
 let startDot = null;
@@ -12,9 +11,7 @@ let initialMousePosition;
 let grid = [];
 const eliminationsUntilSlideMove = 4;
 let eliminationCounter = 0;
-//const dot = document.getElementById("dot");
 
-//dot.addEventListener("transitionend", resetOpacity);
 
 function resetOpacity(dot) {
   dot.style.opacity = 1;
@@ -28,15 +25,6 @@ function addTransitionEndEventListeners() {
   });
 }
 
-//function initiateSlideMove(event) {
-//    if (slideMoves > 0) {
-//        draggedDot = event.target;
-//        draggedDot.classList.add("dragging");
-//        window.addEventListener("mousemove", handleMouseMove);
-//				window.addEventListener("mouseup", handleMouseUp);
-
-  //  }
-//}
 
 function initiateSlideMove(event) {
     if (slideMoves > 0) {
@@ -48,6 +36,11 @@ function initiateSlideMove(event) {
         window.addEventListener("mousemove", handleMouseMove);
         window.addEventListener("mouseup", handleMouseUp);
     }
+}
+
+function updateRemainingEliminations() {
+    const eliminationsCounterDisplay = document.getElementById("eliminationsCounterDisplay");
+    eliminationsCounterDisplay.textContent = eliminationsUntilSlideMove - eliminationCounter;
 }
 
 
@@ -63,7 +56,9 @@ function handleEliminateDotClick(event) {
         if (checkMatch(startDot, { dotElem: event.target, row, col, color })) {
             removeMatchedDots(startDot, { dotElem: event.target, row, col, color });
             updateScore(1);
-            eliminationCounter++; // Increase the elimination counter
+            eliminationCounter++;
+
+						updateRemainingEliminations();
 
             // Grant a slide move and reset the counter if the condition is met
             if (eliminationCounter >= eliminationsUntilSlideMove) {
