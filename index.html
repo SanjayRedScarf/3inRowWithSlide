@@ -4,22 +4,15 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Dot Shift Mania</title>
-    
-    <meta property="og:title" content="Dot Shift Mania" />
-    <meta property="og:description" content="Find three in a row, then reconfigure your gameboard!" />
-    <meta property="og:image" content="https://github.com/SanjayRedScarf/DotShiftMania/blob/main/Image_of_DotShiftMania.png?raw=true" />
-    <meta property="og:url" content="https://sanjayredscarf.github.io/DotShiftMania/" />
-    <meta property="og:type" content="website" />
-    
     <link rel="stylesheet" href="styles.css">
 </head>
 <body>
     <h1>Dot Shift Mania </h1>
     <p>Click on two dots of the same color with a matching dot between them to eliminate all three. Once you have earned slide moves, you can hold Shift and drag a dot to move the whole row or column.</p>
     <div id="game-container"></div>
-    
+    <div id="remainingEliminations">Extra 3-in-a-rows needed to earn a slide move: <span id="eliminationsCounterDisplay">4</span></div>
     <div>Slide Moves: <span id="slide-moves">0</span></div>
-    <div>Score: <span id="score">0</span></div>
+    <p>Score: <span id="score">0</span></p>
     <script src="script.js"></script>
 </body>
 </html>
