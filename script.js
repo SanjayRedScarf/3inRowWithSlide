@@ -10,6 +10,8 @@ let draggedDot = null;
 let isMouseDown = false;
 let initialMousePosition;
 let grid = [];
+const eliminationsUntilSlideMove = 4;
+let eliminationCounter = 0;
 //const dot = document.getElementById("dot");
 
 //dot.addEventListener("transitionend", resetOpacity);
@@ -61,12 +63,15 @@ function handleEliminateDotClick(event) {
         if (checkMatch(startDot, { dotElem: event.target, row, col, color })) {
             removeMatchedDots(startDot, { dotElem: event.target, row, col, color });
             updateScore(1);
-            //if (slideMoves === 0) {
-              //  slideButton.disabled = false;
-            //}
-            updateSlideMoves(1);
+            eliminationCounter++; // Increase the elimination counter
+
+            // Grant a slide move and reset the counter if the condition is met
+            if (eliminationCounter >= eliminationsUntilSlideMove) {
+                updateSlideMoves(1);
+                eliminationCounter = 0;
+            }
             
-            // Should we Reattach the event listeners?
+            // I think I added these event listeners in when doing the work to stop the dot being shaded out after a shift move. I can't quite remember now.
             window.addEventListener("mousemove", handleMouseMove);
             window.addEventListener("mouseup", handleMouseUp);
         }
