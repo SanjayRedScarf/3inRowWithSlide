@@ -3,14 +3,16 @@ const colors = ["red", "blue", "green", "yellow"];
 const gameContainer = document.getElementById("game-container");
 const scoreElem = document.getElementById("score");
 let slideMoves = 0;
+let totalSlideMovesEarned = 0;
 let score = 0;
 let startDot = null;
 let draggedDot = null;
 let isMouseDown = false;
 let initialMousePosition;
 let grid = [];
-const eliminationsUntilSlideMove = 4;
+let eliminationsUntilSlideMove = 1;
 let eliminationCounter = 0;
+const incrementForEliminationsUntilSlideMove = 3;
 
 
 function resetOpacity(dot) {
@@ -169,9 +171,6 @@ console.log("this is handlemouseup");
         event.target.classList.remove("dragging");
 
         updateSlideMoves(-1);
-        //if (slideMoves === 0) {
-          //  slideButton.disabled = true;
-        //}
 
         // Clear the startDot variable
         startDot = null;
@@ -216,10 +215,16 @@ function renderGrid() {
 
 
 const slideMovesElem = document.getElementById("slide-moves");
+const totalSlideMovesEarnedElem = document.getElementById("total-slide-moves-earned");
 
 function updateSlideMoves(value) {
     slideMoves += value;
     slideMovesElem.textContent = slideMoves;
+    
+    if(value>0){
+        totalSlideMovesEarned += value;
+        totalSlideMovesEarnedElem.textContent = totalSlideMovesEarned;
+    }
 }
 
 
@@ -340,6 +345,9 @@ function performSlideMove(direction, index, steps) {
 function updateScore(points) {
     score += points;
     scoreElem.textContent = score;
+    if(score % incrementForEliminationsUntilSlideMove === 0){
+    		eliminationsUntilSlideMove++;
+    }
 }
 
 
